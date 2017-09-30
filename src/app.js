@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const moment = require('moment');
 const app = express();
 
 // Middleware
@@ -11,28 +12,23 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/:timestamp', function (req, res) {
-  let date;
   const { timestamp } = req.params;
-  const months = [
-    'January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'
-  ];
-
-  // if unix timestamp
+  let date;
   if (parseInt(timestamp)) {
-    date = new Date(parseInt(timestamp) * 1000);
+    date = moment.utc(parseInt(timestamp), 'X');
   } else {
-    date = new Date(`${timestamp} 00:00:00Z`);
+    date = moment.utc(timestamp, 'MMMM DD, YYYY');
   }
 
-  const unix = date.getTime() / 1000;
-  const month = months[date.getUTCMonth()];
-  const day = date.getUTCDate();
-  const year = date.getUTCFullYear();
-  const natural = `${month} ${day}, ${year}`;
+  if (!date.isValid()) {
+    res.json({ unix: null , natural: null });
+    return;
+  }
 
-  res.json({ unix, natural });
+  res.json({
+    unix: parseInt(date.format('X')),
+    natural: date.format('MMMM D, Y')
+  });
 });
 
 module.exports = app;

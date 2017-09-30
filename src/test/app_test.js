@@ -38,6 +38,7 @@ describe('The express app', () => {
     request(app)
       .get('/1450137600')
       .end((err, response) => {
+        console.log(response.body);
         assert(response.body.unix === 1450137600);
         assert(response.body.natural === "December 15, 2015");
         done();
@@ -48,8 +49,20 @@ describe('The express app', () => {
     request(app)
       .get('/December%2015,%202015')
       .end((err, response) => {
+        console.log(response.body);
         assert(response.body.unix === 1450137600);
         assert(response.body.natural === "December 15, 2015");
+        done();
+      });
+  });
+
+  it('handles a GET request to /:timestamp with an invalid string date', function(done) {
+    request(app)
+      .get('/invalid')
+      .end((err, response) => {
+        console.log(response.body);
+        assert(response.body.unix === null);
+        assert(response.body.natural === null);
         done();
       });
   });
