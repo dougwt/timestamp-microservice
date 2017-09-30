@@ -34,13 +34,24 @@ describe('The express app', () => {
       });
   });
 
-  // it('handles a GET request to /api', function(done) {
-  //   request(app)
-  //     .get('/api')
-  //     .end((err, response) => {
-  //       assert(response.body.hi === 'there');
-  //       done();
-  //     });
-  // });
+  it('handles a GET request to /:timestamp with a unix timestamp', function(done) {
+    request(app)
+      .get('/1450137600')
+      .end((err, response) => {
+        assert(response.body.unix === 1450137600);
+        assert(response.body.natural === "December 15, 2015");
+        done();
+      });
+  });
+
+  it('handles a GET request to /:timestamp with a date', function(done) {
+    request(app)
+      .get('/December%2015,%202015')
+      .end((err, response) => {
+        assert(response.body.unix === 1450137600);
+        assert(response.body.natural === "December 15, 2015");
+        done();
+      });
+  });
 
 });
