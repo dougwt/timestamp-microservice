@@ -34,35 +34,62 @@ describe('The express app', () => {
       });
   });
 
-  it('handles a GET request to /:timestamp with a unix timestamp', function(done) {
+  it('handles a GET request to /:query with an example unix timestamp', function(done) {
     request(app)
       .get('/1450137600')
       .end((err, response) => {
-        console.log(response.body);
         assert(response.body.unix === 1450137600);
         assert(response.body.natural === "December 15, 2015");
         done();
       });
   });
 
-  it('handles a GET request to /:timestamp with a date', function(done) {
+  it('handles a GET request to /:query with an example date', function(done) {
     request(app)
       .get('/December%2015,%202015')
       .end((err, response) => {
-        console.log(response.body);
         assert(response.body.unix === 1450137600);
         assert(response.body.natural === "December 15, 2015");
         done();
       });
   });
 
-  it('handles a GET request to /:timestamp with an invalid string date', function(done) {
+  it('handles a GET request to /:query with an invalid string date', function(done) {
     request(app)
       .get('/invalid')
       .end((err, response) => {
-        console.log(response.body);
         assert(response.body.unix === null);
         assert(response.body.natural === null);
+        done();
+      });
+  });
+
+  it('handles a GET request to /:query with another unix timestamp', function(done) {
+    request(app)
+      .get('/875664000')
+      .end((err, response) => {
+        assert(response.body.unix === 875664000);
+        assert(response.body.natural === "October 1, 1997");
+        done();
+      });
+  });
+
+  it('handles a GET request to /:query with another date', function(done) {
+    request(app)
+      .get('/October%201,%201997')
+      .end((err, response) => {
+        assert(response.body.unix === 875664000);
+        assert(response.body.natural === "October 1, 1997");
+        done();
+      });
+  });
+
+  it('handles a GET request to /:query with a date missing year', function(done) {
+    request(app)
+      .get('/October%201')
+      .end((err, response) => {
+        assert(response.body.unix === 1506816000);
+        assert(response.body.natural === "October 1, 2017");
         done();
       });
   });

@@ -11,13 +11,13 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/:timestamp', function (req, res) {
-  const { timestamp } = req.params;
+app.get('/:query', function (req, res) {
+  const { query } = req.params;
   let date;
-  if (parseInt(timestamp)) {
-    date = moment.utc(parseInt(timestamp), 'X');
+  if (parseInt(query)) {
+    date = moment.utc(parseInt(query), 'X');
   } else {
-    date = moment.utc(timestamp, 'MMMM DD, YYYY');
+    date = moment.utc(query, 'MMMM DD, YYYY');
   }
 
   if (!date.isValid()) {
