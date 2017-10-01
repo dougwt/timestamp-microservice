@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_ENV=test nodemon --exec 'mocha --recursive -R min src/test'"
+    "test": "NODE_ENV=test nodemon --exec 'mocha --recursive -R min src/test'",
+    "test-travis": "NODE_ENV=test mocha --recursive src/test"
   },
   "author": "",
   "license": "ISC",
