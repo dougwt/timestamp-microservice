@@ -3,7 +3,6 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('The express app', () => {
-
   it('returns a static HTML page for GET requests to /', function(done) {
     request(app)
       .get('/')
@@ -39,7 +38,7 @@ describe('The express app', () => {
       .get('/1450137600')
       .end((err, response) => {
         assert(response.body.unix === 1450137600);
-        assert(response.body.natural === "December 15, 2015");
+        assert(response.body.natural === 'December 15, 2015');
         done();
       });
   });
@@ -49,7 +48,7 @@ describe('The express app', () => {
       .get('/December%2015,%202015')
       .end((err, response) => {
         assert(response.body.unix === 1450137600);
-        assert(response.body.natural === "December 15, 2015");
+        assert(response.body.natural === 'December 15, 2015');
         done();
       });
   });
@@ -69,7 +68,7 @@ describe('The express app', () => {
       .get('/875664000')
       .end((err, response) => {
         assert(response.body.unix === 875664000);
-        assert(response.body.natural === "October 1, 1997");
+        assert(response.body.natural === 'October 1, 1997');
         done();
       });
   });
@@ -79,7 +78,7 @@ describe('The express app', () => {
       .get('/October%201,%201997')
       .end((err, response) => {
         assert(response.body.unix === 875664000);
-        assert(response.body.natural === "October 1, 1997");
+        assert(response.body.natural === 'October 1, 1997');
         done();
       });
   });
@@ -88,10 +87,9 @@ describe('The express app', () => {
     request(app)
       .get('/October%201')
       .end((err, response) => {
-        assert(response.body.unix === 1506816000);
-        assert(response.body.natural === "October 1, 2017");
+        assert(response.body.unix === 1538352000);
+        assert(response.body.natural === 'October 1, 2018');
         done();
       });
   });
-
 });
